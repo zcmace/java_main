@@ -1,6 +1,6 @@
 package java_main;
 
-public class test {
+public class switchMinMaxArray {
 //this is coming from a change on my computer
 	public static void main(String[] args) {
 		int[][] array = { { 1, 2, 3 }, { 4, 5, 6 } };
