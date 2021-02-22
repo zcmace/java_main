@@ -2,6 +2,7 @@ package java_main;
 
 import java.util.Scanner;
 
+//simple program to simulate course registration
 public class CourseRegistration {
 	public static void showMenu() {
 		System.out.println("1: Add a student to the course");
@@ -14,10 +15,11 @@ public class CourseRegistration {
 	}
 
 	public static void main(String[] args) {
-		Course course = new Course("Computer Science", 101, 20, 20);
-		Scanner input = new Scanner(System.in);
+		
+		Course course = new Course("Computer Science", 101, 20, 20); //creates class
+		Scanner input = new Scanner(System.in);//gets input
 		boolean leave = false;
-		while (leave != true) {
+		while (leave != true) {// while loop to show menu and handle user input
 			showMenu();
 
 			switch (input.next().trim()) {
@@ -82,7 +84,7 @@ public class CourseRegistration {
 	}
 
 }
-
+	
 class Student extends Person {
 	public Student(String name, int id) {
 		this.name = name;
@@ -90,12 +92,12 @@ class Student extends Person {
 
 	}
 
-	public int getID() {
+	public int getID() { //returns the student's ID variable
 		return this.id;
 
 	}
 
-	public boolean equals(Student s) {
+	public boolean equals(Student s) { //overrides Object.equals method. Returns true if student ID numbers match
 		if (s.id == this.id)
 			return true;
 		else
@@ -114,12 +116,12 @@ class Instructor extends Person {
 class Person {
 	String name;
 	int id;
-
+      
 	public String toString() {
 		return name + ", " + id;
 	}
 }
-
+	
 class Course {
 	String name;
 	int CourseCode;
@@ -131,7 +133,7 @@ class Course {
 	int NumberInWaitlist;
 	Student[] Waitlist;
 
-	public Course(String name, int code, int MaxStudents, int MaxWaitlist) {
+	public Course(String name, int code, int MaxStudents, int MaxWaitlist) { // constructor method
 		this.name = name;
 		this.CourseCode = code;
 		this.MaxStudents = MaxStudents;
@@ -141,7 +143,7 @@ class Course {
 
 	}
 
-	public void setInstructor(Instructor I) {
+	public void setInstructor(Instructor I) { // get and sets for the instructor variable
 		this.I = I;
 
 	}
@@ -151,7 +153,7 @@ class Course {
 
 	}
 
-	public Student findStudent(int id) {
+	public Student findStudent(int id) { //searches for student based on student id
 		for (int i = 0; i < this.students.length; i++) {
 			if (this.students[i] == null)
 				continue;
@@ -163,7 +165,7 @@ class Course {
 
 	}
 
-	public Student findStudentWait(int id) {
+	public Student findStudentWait(int id) { //finds the student in the waitlist
 		for (int i = 0; i < this.Waitlist.length; i++) {
 			if (this.Waitlist[i] == null)
 				continue;
@@ -175,21 +177,21 @@ class Course {
 
 	}
 
-	public void addStudent(Student s) {
+	public void addStudent(Student s) { //adds student to class
 		boolean added = false;
-		if (this.findStudent(s.id) == null && this.findStudentWait(s.id) == null) {
+		if (this.findStudent(s.id) == null && this.findStudentWait(s.id) == null) { //Checks to see if student is in class already or is in the waitlist
 			for (int i = 0; i < this.students.length; i++) {
 				if (added == true)
-					continue;
-				else if (this.students[i] == (null)) {
+					break;
+				else if (this.students[i] == (null)) { //finds spot in waitlist
 
 					this.students[i] = s;
 					added = true;
 				}
 			}
 			for (int i = 0; i < this.Waitlist.length; i++) {
-				if (added == true)
-					continue;
+				if (added == true) //if student was added to class list do not add to waitlist
+					break;
 				else if (this.Waitlist[i] == (null)) {
 
 					this.Waitlist[i] = s;
@@ -217,16 +219,17 @@ class Course {
 				if (this.Waitlist[i] != null) {
 					this.students[index] = Waitlist[i];
 					Waitlist[i] = null;
-					reorganizeWaitlist();
+					reorganizeWaitlist(); //calls to restructure the waitlist to ensure First in First out functionality
+							      // I normally would do this with a queue but the professor did not want us to use it here. 
 
 				}
 			}
 
 		}
 	}
-
-	public void reorganizeWaitlist() {
-		int tempcount = 0;
+		
+	public void reorganizeWaitlist() { // method to reorganize the waitlist to ensure Frst in First out functionality
+		int tempcount = 0; //holds current index for new waitlist (accounts for empty spaces in current waitlist)
 		Student[] temp = new Student[this.MaxWaitlist];
 		for (int i = 0; i < this.Waitlist.length; i++) {
 			if (this.Waitlist[i] != null) {
